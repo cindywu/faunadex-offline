@@ -2,6 +2,8 @@ import React, { useRef, useState, useEffect } from 'react'
 import { usePlantIDs, usePlantByID, useAllPlants, useFlatPlants } from '../datamodel/subscriptions'
 import { randomPlant } from '../datamodel/plant'
 import Fuse from 'fuse.js'
+import { consoleLogSink } from '@rocicorp/logger'
+import router from 'next/router'
 
 export default function Plants({reflect}:any) {
   const plantIDs = usePlantIDs(reflect)
@@ -64,7 +66,7 @@ export default function Plants({reflect}:any) {
       <Search handleSetSearchTerm={setSearchTerm}/>
       {searchResults && <SearchResults searchResults={searchResults}/>}
       <AddPlant reflect={reflect}/>
-      {plantIDs && <AllPlants reflect={reflect} plantIDs={plantIDs}/>}
+      {plantIDs && <AllPlants reflect={reflect} plantIDs={plantIDs} flatPlants={flatPlants}/>}
     </div>
   )
 }
@@ -73,7 +75,7 @@ function SearchResults({searchResults}:any){
   return (
     <div className={"px-4"}>
       {searchResults.map((result:any) => {
-        return <div>{result.item.species}</div>
+        return <Plant key={result.item.id} plant={result.item}/>
       })}
     </div>
   )
@@ -90,20 +92,26 @@ function Search({handleSetSearchTerm}:any){
     </div>
   )
 }
-function AllPlants({reflect, plantIDs} :any){
+function AllPlants({reflect, plantIDs, flatPlants} :any){
   return (
     <div className={"p-2"}>
-      {plantIDs.map((plantID:string) => {
-        return <Plant reflect={reflect} plantID={plantID} key={plantID}/>
+      {flatPlants.map((plant:any) => {
+        return <Plant reflect={reflect} plant={plant} key={plant.id}/>
       })}
     </div>
   )
 }
 
-function Plant({reflect, plantID}: any) {
-  const plant = usePlantByID(reflect, plantID)
+function Plant({reflect, plant}: any) {
+  // const plant = usePlantByID(reflect, plantID)
+  function showPlant(){
+    console.log('show plant')
+    router.push(`/p/${plant.id}`)
+  }
+  // route to /p/[id]
+
   return (
-    <div className={"flex flex-row justify-between"}>
+    <div onClick={() => showPlant()} className={"flex flex-row justify-between"}>
       <div>{plant && plant.species}</div>
       <div>{plant && plant.createdBy}</div>
       {/* <button onClick={() => reflect.mutate.deletePlant(plantID)}>delete</button> */}
