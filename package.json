@@ -9,9 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@datadog/browser-logs": "^4.34.0",
+    "@rocicorp/logger": "^4.0.0",
+    "@rocicorp/reflect": "^0.12.2",
+    "@rocicorp/reflect-server": "^0.21.1-hotfix.2",
     "next": "^13.1.6",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "replicache-react": "^2.10.0",
+    "zod": "^3.20.6"
   },
   "devDependencies": {
     "@types/node": "^18.13.0",
