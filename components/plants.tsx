@@ -9,7 +9,7 @@ export default function Plants({reflect}:any) {
     <div>
       Plants
       <AddPlant reflect={reflect}/>
-      <AllPlants reflect={reflect} plantIDs={plantIDs}/>
+      {plantIDs && <AllPlants reflect={reflect} plantIDs={plantIDs}/>}
     </div>
   )
 }
