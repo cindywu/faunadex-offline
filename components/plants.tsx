@@ -63,8 +63,8 @@ export default function Plants({reflect}:any) {
     <div>
       <Search handleSetSearchTerm={setSearchTerm}/>
       {searchResults && <SearchResults searchResults={searchResults}/>}
-      {/* <AddPlant reflect={reflect}/> */}
-      {/* {plantIDs && <AllPlants reflect={reflect} plantIDs={plantIDs}/>} */}
+      <AddPlant reflect={reflect}/>
+      {plantIDs && <AllPlants reflect={reflect} plantIDs={plantIDs}/>}
     </div>
   )
 }
@@ -125,11 +125,11 @@ function AddPlant({reflect}:any) {
   }
 
   return (
-    <>
-      <input ref={plantSpeciesRef} type="text" placeholder="name" />
+    <div className={"p-4"}>
+      <input className={"focus:outline-none"} ref={plantSpeciesRef} type="text" placeholder="name" />
       <button onClick={() => makePlant()}>
         add plant
       </button>
-    </>
+    </div>
   )
 }
