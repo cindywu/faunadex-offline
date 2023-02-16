@@ -13,6 +13,7 @@
     "@rocicorp/logger": "^4.0.0",
     "@rocicorp/reflect": "^0.12.2",
     "@rocicorp/reflect-server": "^0.21.1-hotfix.2",
+    "fuse.js": "^6.6.2",
     "next": "^13.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

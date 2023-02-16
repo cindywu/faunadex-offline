@@ -27,3 +27,26 @@ export function usePlantByID(reflect: Reflect<M>, id: string) {
     null
   );
 }
+
+export function useFlatPlants(reflect: Reflect<M>) {
+  const plants = useAllPlants(reflect)
+  let parsedPlants: any[] = []
+  plants.map(([k, v]: [string, any]) => {
+    let value = v
+    Object.assign(value, {id: k.substring(plantPrefix.length)})
+    parsedPlants.push(value)
+  })
+  console.log({parsedPlants})
+  return parsedPlants
+}
+
+export function useAllPlants(reflect: Reflect<M>) {
+  return useSubscribe(
+    reflect,
+    async(tx) => {
+      const plants = await tx.scan({ prefix: plantPrefix }).entries().toArray();
+      return plants
+    },
+    []
+  )
+}

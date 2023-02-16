@@ -43,6 +43,14 @@ export function putPlant(
   return tx.put(key(id), plant);
 }
 
+export async function deletePlant(
+  tx: WriteTransaction,
+  id: string
+): Promise<void> {
+  await tx.del(key(id))
+}
+
+
 function key(id: string):string {
   return `${plantPrefix}${id}`
 }
