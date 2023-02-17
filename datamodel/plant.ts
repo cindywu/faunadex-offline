@@ -50,6 +50,17 @@ export async function deletePlant(
   await tx.del(key(id))
 }
 
+export async function updatePlant(
+  tx: WriteTransaction,
+  {id, propertyName, plantProperty}: any
+): Promise<void> {
+  const plant = await getPlant(tx, id)
+  console.log({plantProperty})
+  const newPlant = {...plant, [propertyName]: plantProperty}
+  console.log({newPlant})
+  return tx.put(key(id), newPlant)
+}
+
 
 function key(id: string):string {
   return `${plantPrefix}${id}`

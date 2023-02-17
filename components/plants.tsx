@@ -111,32 +111,34 @@ function Plant({reflect, plant}: any) {
   // route to /p/[id]
 
   return (
+    <div>
     <div onClick={() => showPlant()} className={"flex flex-row justify-between"}>
-      <div>{plant && plant.species}</div>
+      <div>{plant && plant.hawaiianName}</div>
       <div>{plant && plant.createdBy}</div>
-      {/* <button onClick={() => reflect.mutate.deletePlant(plantID)}>delete</button> */}
+    </div>
+    {/* <button onClick={() => reflect.mutate.deletePlant(plant.id)}>delete</button> */}
     </div>
   )
 }
 
 function AddPlant({reflect}:any) {
 
-  const plantSpeciesRef = useRef(null)
+  const plantHawaiianNameRef = useRef(null)
 
   function makePlant(){
     let randPlant = randomPlant()
-    let plantSpecies = plantSpeciesRef.current.value
-    randPlant.plant.species = plantSpecies
-    randPlant.plant.createdBy = 'jason'
+    let plantHawaiianName = plantHawaiianNameRef.current.value
+    randPlant.plant.hawaiianName = plantHawaiianName
+    randPlant.plant.createdBy = 'cindy'
     reflect.mutate.createPlant(randPlant)
-    plantSpeciesRef.current.value = ''
+    plantHawaiianNameRef.current.value = ''
   }
 
   return (
     <div className={"p-4"}>
-      <input className={"focus:outline-none"} ref={plantSpeciesRef} type="text" placeholder="name" />
+      <input className={"focus:outline-none"} ref={plantHawaiianNameRef} type="text" placeholder="Hawaiian Name" />
       <button onClick={() => makePlant()}>
-        add plant
+        Add plant
       </button>
     </div>
   )
