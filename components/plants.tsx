@@ -1,97 +1,25 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { usePlantIDs, usePlantByID, useAllPlants, useFlatPlants } from '../datamodel/subscriptions'
+import React, { useRef } from 'react'
+import { usePlantIDs, useFlatPlants } from '../datamodel/subscriptions'
 import { randomPlant } from '../datamodel/plant'
-import Fuse from 'fuse.js'
-import { consoleLogSink } from '@rocicorp/logger'
 import router from 'next/router'
+import Search from './search'
 
 export default function Plants({reflect}:any) {
   const plantIDs = usePlantIDs(reflect)
   const flatPlants = useFlatPlants(reflect)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [searchResults, setSearchResults] = useState<any[]>([])
 
-  console.log({reflect})
-  console.log({flatPlants})
-
-  useEffect(() => {
-    console.log('searchTerm', searchTerm)
-    if (searchTerm?.length > 0) {
-      if (flatPlants) {
-        const results = fuse.search(searchTerm)
-        processSearchResultChange(results)
-      }
-    } else {
-      setSearchResults([])
-    }
-  }, [searchTerm])
-
-  const debounce = (func: any, timeout = 300) => {
-    let timer: any
-    return (...args: any) => {
-      clearTimeout(timer)
-      // @ts-ignore
-      timer = setTimeout(() => {func.apply(this, args)}, timeout)
-    }
-  }
-
-  const processSearchResultChange = debounce((thing: any) => setSearchResults(thing))
-
-  const options = {
-    keys: [
-      'createdAt',
-      'createdBy',
-      'clade',
-      'cladeDescription',
-      'family',
-      'familyDescription',
-      'genus',
-      'species',
-      'subtax',
-      'subtaxName',
-      'speciesCode',
-      'native',
-      'distribution',
-      'englishName',
-      'hawaiianName',
-      'formerName',
-      'images',
-    ]
-  }
-
-  const fuse = new Fuse(flatPlants, options)
 
   return (
     <div>
-      <Search handleSetSearchTerm={setSearchTerm}/>
-      {searchResults && <SearchResults searchResults={searchResults}/>}
-      <AddPlant reflect={reflect}/>
+      <Search
+        flatPlants={flatPlants}
+      />
       {plantIDs && <AllPlants reflect={reflect} plantIDs={plantIDs} flatPlants={flatPlants}/>}
+      <AddPlant reflect={reflect}/>
     </div>
   )
 }
 
-function SearchResults({searchResults}:any){
-  return (
-    <div className={"px-4"}>
-      {searchResults.map((result:any) => {
-        return <Plant key={result.item.id} plant={result.item}/>
-      })}
-    </div>
-  )
-}
-
-function Search({handleSetSearchTerm}:any){
-  function doSomething(e:any){
-    handleSetSearchTerm(e.target.value)
-  }
-
-  return(
-    <div className={"p-4 border-2 m-2"}>
-      <input className={"w-full text-xs focus:outline-none"} type="text" placeholder="search oahu plants by species, hawaiian name, whatever" onChange={(e) => doSomething(e)}/>
-    </div>
-  )
-}
 function AllPlants({reflect, plantIDs, flatPlants} :any){
   return (
     <div className={"p-2"}>
@@ -102,19 +30,16 @@ function AllPlants({reflect, plantIDs, flatPlants} :any){
   )
 }
 
-function Plant({reflect, plant}: any) {
-  // const plant = usePlantByID(reflect, plantID)
+function Plant({plant}: any) {
   function showPlant(){
-    console.log('show plant')
     router.push(`/p/${plant.id}`)
   }
-  // route to /p/[id]
 
   return (
-    <div>
+    <div className={'px-2 text-xs'}>
     <div onClick={() => showPlant()} className={"flex flex-row justify-between"}>
       <div>{plant && plant.hawaiianName}</div>
-      <div>{plant && plant.createdBy}</div>
+      {/* <div>{plant && plant.createdBy}</div> */}
     </div>
     {/* <button onClick={() => reflect.mutate.deletePlant(plant.id)}>delete</button> */}
     </div>
@@ -122,21 +47,20 @@ function Plant({reflect, plant}: any) {
 }
 
 function AddPlant({reflect}:any) {
-
-  const plantHawaiianNameRef = useRef(null)
+  const plantPropertyRef = useRef(null)
 
   function makePlant(){
     let randPlant = randomPlant()
-    let plantHawaiianName = plantHawaiianNameRef.current.value
+    let plantHawaiianName = plantPropertyRef.current.value
     randPlant.plant.hawaiianName = plantHawaiianName
     randPlant.plant.createdBy = 'cindy'
     reflect.mutate.createPlant(randPlant)
-    plantHawaiianNameRef.current.value = ''
+    plantPropertyRef.current.value = ''
   }
 
   return (
     <div className={"p-4"}>
-      <input className={"focus:outline-none"} ref={plantHawaiianNameRef} type="text" placeholder="Hawaiian Name" />
+      <input className={"focus:outline-none"} ref={plantPropertyRef} type="text" placeholder="Hawaiian Name" />
       <button onClick={() => makePlant()}>
         Add plant
       </button>
