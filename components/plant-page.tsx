@@ -82,14 +82,14 @@ function PlantProperty({reflect, plantID, propertyName, plantProperty}: {reflect
         <div>{propertyName}</div>
         {showInput ?
           <input
-          className={''}
-          ref={valueRef}
-          placeholder={propertyName}
-          value={value}
-          onChange={(e) => updateValue(e)}
-        />
+            className={''}
+            ref={valueRef}
+            placeholder={propertyName}
+            value={value}
+            onChange={(e) => updateValue(e)}
+          />
         :
-          <div onClick={() => setShowInput(!showInput)}>{plantProperty}</div>
+          <div onClick={() => setShowInput(!showInput)}>{plantProperty ? plantProperty : "null"}</div>
         }
       </div>
     </div>
