@@ -88,7 +88,7 @@ function PlantSearchResult({plant}: any) {
   }
 
   return (
-    <div onClick={() => showPlant()} className={"flex flex-row text-xs"}>
+    <div onClick={() => showPlant()} className={"flex flex-row text-xs bg-lime-200"}>
       <div>{plant.hawaiianName}</div>
       <div className={"pl-2 text-zinc-400"}>{plant.genus}</div>
       <div className={"pl-2 text-zinc-400"}>{plant.species}</div>
