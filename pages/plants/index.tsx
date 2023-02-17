@@ -8,6 +8,11 @@ import { nanoid } from 'nanoid'
 // import { randUserInfo } from '../../datamodel/client-state'
 import Plants from '../../components/plants'
 
+
+// - click a plant from search results
+// - show plant info on plant route
+// - edit plant info on plant page
+
 export default function Home() {
   const [reflect, setReflectClient] = useState<Reflect<M> | null>(null)
   const [_, setOnline] = useState(false)
