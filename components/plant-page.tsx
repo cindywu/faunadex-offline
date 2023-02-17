@@ -44,8 +44,13 @@ export default function PlantPage({reflect, plantID} : {reflect: Reflect<M>, pla
 
 function PlantHeader({plant}:any) {
   return(
-    <div className={"text-2xl"}>
-      {`${plant.hawaiianName} › ${plant.genus} (${plant.species})`}
+    <div className={" flex text-2xl"}>
+      <div>
+        {plant.hawaiianName}
+      </div>
+      <div className={"pl-2 text-zinc-400"}>
+        {plant.genus} ({plant.species})
+      </div>
     </div>
   )
 }
