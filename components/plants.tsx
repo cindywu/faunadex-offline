@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { usePlantIDs, useFlatPlants } from '../datamodel/subscriptions'
 import { randomPlant } from '../datamodel/plant'
 import router from 'next/router'
@@ -10,7 +10,7 @@ export default function Plants({reflect}:any) {
 
 
   return (
-    <div>
+    <div className={"h-screen overflow-auto"}>
       <Search
         flatPlants={flatPlants}
       />
@@ -30,7 +30,7 @@ function AllPlants({reflect, plantIDs, flatPlants} :any){
   )
 }
 
-function Plant({plant}: any) {
+function Plant({plant, reflect}: any) {
   function showPlant(){
     router.push(`/p/${plant.id}`)
   }
@@ -48,6 +48,7 @@ function Plant({plant}: any) {
 
 function AddPlant({reflect}:any) {
   const plantPropertyRef = useRef(null)
+  const [showForm, setShowForm] = useState(false)
 
   function makePlant(){
     let randPlant = randomPlant()
@@ -59,11 +60,27 @@ function AddPlant({reflect}:any) {
   }
 
   return (
-    <div className={"p-4"}>
-      <input className={"focus:outline-none"} ref={plantPropertyRef} type="text" placeholder="Hawaiian Name" />
-      <button onClick={() => makePlant()}>
-        Add plant
-      </button>
+    <div className={"absolute right-0 bottom-0 p-4"}>
+      {showForm ?
+        <div className={"text-sm"}>
+        <input className={"focus:outline-none"} ref={plantPropertyRef} type="text" placeholder="Hawaiian Name" />
+        <button onClick={() => makePlant()}>
+          Add plant
+        </button>
+        <button onClick={() => setShowForm(!showForm)} className={'pl-2'}>&times;</button>
+        </div>
+      :
+      <>
+        <button
+          className={"relative z-0 w-8 h-8 bg-black hover:bg-zinc-700"}
+          onClick={() => setShowForm(!showForm)}
+        >
+          <div className={"absolute inset-0 flex justify-center items-center z-10 text-white"}>
+            +
+          </div>
+        </button>
+      </>
+      }
     </div>
   )
 }
